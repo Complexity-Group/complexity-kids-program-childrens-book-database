@@ -1,0 +1,364 @@
+<!-- =========================
+     STYLES
+========================= -->
+<style>
+    #results {
+      max-width: 900px;
+      margin: 20px auto;
+    }
+  
+    #searchInput {
+      width: 100%;
+      max-width: 700px;
+      padding: 18px 22px;
+      margin: 25px auto;
+      display: block;
+      font-size: 18px;
+      border-radius: 10px;
+      border: 1px solid #aaa;
+    }
+  
+    .filterGrid {
+      max-width: 700px;
+      margin: 10px auto;
+    }
+  
+    .filterGroup {
+      border: 1px solid #ddd;
+      border-radius: 10px;
+      background: #fafafa;
+      padding: 12px 14px;
+      margin-bottom: 15px;
+    }
+  
+    .filterHeader {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 10px;
+    }
+  
+    .filterTitle {
+      font-weight: 700;
+    }
+  
+    .filterActions {
+      display: inline-flex;
+      gap: 8px;
+    }
+  
+    .miniBtn {
+      padding: 6px 10px;
+      font-size: 12px;
+      border-radius: 999px;
+      border: 1px solid #bbb;
+      background: white;
+      cursor: pointer;
+    }
+  
+    .filterSection {
+      margin-bottom: 18px;
+    }
+  
+    .filterSectionTitle {
+      font-weight: 700;
+      font-size: 15px;
+      margin-bottom: 8px;
+      padding-bottom: 4px;
+      border-bottom: 1px solid #ddd;
+    }
+  
+    .sectionGrid {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px 14px;
+    }
+  
+    .checkboxItem {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      border: 1px solid #e5e5e5;
+      background: white;
+      padding: 8px 10px;
+      border-radius: 999px;
+      font-size: 14px;
+      cursor: pointer;
+    }
+  
+    .yearValue {
+      font-weight: bold;
+      font-size: 16px;
+    }
+  
+    input[type="range"] {
+      width: 100%;
+      margin-top: 10px;
+    }
+  
+    .searchButton {
+      display: block;
+      margin: 20px auto 10px;
+      padding: 14px 36px;
+      background: #4A4A4A;
+      color: white;
+      font-size: 18px;
+      border: none;
+      border-radius: 12px;
+      cursor: pointer;
+    }
+  
+    .clearButton {
+      display: block;
+      margin: 0 auto 25px;
+      padding: 10px 30px;
+      background: white;
+      color: #4A4A4A;
+      font-size: 16px;
+      border: 2px solid #4A4A4A;
+      border-radius: 8px;
+      cursor: pointer;
+    }
+  
+    .resultItem {
+      background: #fafafa;
+      border-radius: 10px;
+      padding: 20px;
+      margin-bottom: 20px;
+      border: 1px solid #ddd;
+    }
+  
+    .bookInfo h3 {
+      margin: 0 0 8px 0;
+    }
+  
+    .bookInfo p {
+      margin: 4px 0;
+    }
+  
+    .description {
+      margin-top: 10px;
+    }
+  </style>
+  
+  
+  <input id="searchInput" type="text" placeholder="Search keywords..." />
+  
+  
+  <div class="filterGrid">
+  
+    <!-- CATEGORY FILTER -->
+    <div class="filterGroup">
+      <div class="filterHeader">
+        <div class="filterTitle">Filter by Category</div>
+        <div class="filterActions">
+          <button class="miniBtn" onclick="selectAll()">Select all</button>
+          <button class="miniBtn" onclick="clearAll()">Clear</button>
+        </div>
+      </div>
+      <div id="masterFilter"></div>
+    </div>
+  
+    <!-- YEAR SLIDER -->
+    <div class="filterGroup">
+      <div class="filterHeader">
+        <div class="filterTitle">
+          Filter by Year:
+          <span id="yearDisplay" class="yearValue"></span>
+        </div>
+      </div>
+      <input type="range" id="yearSlider">
+    </div>
+  
+  </div>
+  
+  
+  <button onclick="runSearch()" class="searchButton">Search</button>
+  <button onclick="clearFilters()" class="clearButton">Clear</button>
+  
+  <div id="results"></div>
+  
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.4.1/papaparse.min.js"></script>
+  
+  <script>
+  const csvUrl =
+  "https://docs.google.com/spreadsheets/d/e/2PACX-1vQa4jwN85ZFxUo312YKLjdP7ijcNw96pUTxkiCgNWlrZhAClo6oV7aq5v3XoD4BwH9kJELtM1lslrh5/pub?gid=1676386569&single=true&output=csv";
+  
+  let database = [];
+  let headers = [];
+  
+  const ALLOWED_YEARS = [
+    1973, 1985, 2004, 2005, 2009, 2010, 2011, 2012, 2014,
+    2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024, 2025
+  ];
+  
+  const MASTER_GROUPS = {
+    "Concepts": ["Concept:"],
+    "Audience": ["Audience:"],
+    "Format": ["Format:"],
+    "Genre": ["Genre:"]
+  };
+  
+  const MASTER_PREFIXES = ["Concept:", "Audience:", "Format:", "Genre:"];
+  
+  Papa.parse(csvUrl, {
+    download: true,
+    header: true,
+    skipEmptyLines: true,
+    complete: ({ data, meta }) => {
+      headers = meta.fields || [];
+      database = data || [];
+      populateFilters();
+      setupYearSlider();
+    }
+  });
+  
+  function norm(s) { return String(s || "").trim(); }
+  
+  function isTrueish(v) {
+    return ["true","yes","y","1","checked"]
+      .includes(String(v || "").toLowerCase());
+  }
+  
+  function optionsFromHeaderPrefixes(prefixes) {
+    const opts = new Set();
+    headers.forEach(h => {
+      prefixes.forEach(p => {
+        if (h.startsWith(p)) {
+          const label = h.slice(p.length).trim();
+          if (label) opts.add(label);
+        }
+      });
+    });
+    return opts;
+  }
+  
+  function populateFilters() {
+    const container = document.getElementById("masterFilter");
+    container.innerHTML = "";
+  
+    Object.entries(MASTER_GROUPS).forEach(([groupName, prefixes]) => {
+      const options = optionsFromHeaderPrefixes(prefixes);
+      if (!options.size) return;
+  
+      const section = document.createElement("div");
+      section.className = "filterSection";
+  
+      const title = document.createElement("div");
+      title.className = "filterSectionTitle";
+      title.textContent = groupName;
+  
+      const grid = document.createElement("div");
+      grid.className = "sectionGrid";
+  
+      [...options].sort().forEach(v => {
+        const label = document.createElement("label");
+        label.className = "checkboxItem";
+  
+        const input = document.createElement("input");
+        input.type = "checkbox";
+        input.value = v;
+  
+        label.appendChild(input);
+        label.appendChild(document.createTextNode(v));
+        grid.appendChild(label);
+      });
+  
+      section.appendChild(title);
+      section.appendChild(grid);
+      container.appendChild(section);
+    });
+  }
+  
+  function setupYearSlider() {
+    const slider = document.getElementById("yearSlider");
+    const display = document.getElementById("yearDisplay");
+  
+    slider.min = 0;
+    slider.max = ALLOWED_YEARS.length - 1;
+    slider.step = 1;
+    slider.value = ALLOWED_YEARS.length - 1;
+  
+    display.textContent = ALLOWED_YEARS[slider.value];
+  
+    slider.addEventListener("input", () => {
+      display.textContent = ALLOWED_YEARS[slider.value];
+    });
+  }
+  
+  function getCheckedValues() {
+    return [...document.querySelectorAll("#masterFilter input:checked")]
+      .map(cb => cb.value);
+  }
+  
+  function selectAll() {
+    document.querySelectorAll("#masterFilter input")
+      .forEach(cb => cb.checked = true);
+  }
+  
+  function clearAll() {
+    document.querySelectorAll("#masterFilter input")
+      .forEach(cb => cb.checked = false);
+  }
+  
+  function clearFilters() {
+    document.getElementById("searchInput").value = "";
+    clearAll();
+    setupYearSlider();
+    document.getElementById("results").innerHTML = "";
+  }
+  
+  function collectTrueFromHeaderPrefixes(item, prefixes) {
+    const out = [];
+    headers.forEach(h => {
+      prefixes.forEach(p => {
+        if (h.startsWith(p) && isTrueish(item[h])) {
+          out.push(h.slice(p.length).trim());
+        }
+      });
+    });
+    return out;
+  }
+  
+  function runSearch() {
+    const results = document.getElementById("results");
+  
+    const terms = document.getElementById("searchInput")
+      .value.toLowerCase().split(/\s+/).filter(Boolean);
+  
+    const selectedFilters = getCheckedValues();
+    const sliderIndex = parseInt(document.getElementById("yearSlider").value);
+    const selectedYear = ALLOWED_YEARS[sliderIndex];
+  
+    const filtered = database.filter(item => {
+      const text = Object.values(item).join(" ").toLowerCase();
+      if (terms.length && !terms.every(t => text.includes(t))) return false;
+  
+      const rowValues = collectTrueFromHeaderPrefixes(item, MASTER_PREFIXES);
+      if (selectedFilters.length &&
+          !selectedFilters.some(v => rowValues.includes(v))) return false;
+  
+      if (parseInt(item["Year"]) !== selectedYear) return false;
+  
+      return true;
+    });
+  
+    if (!filtered.length) {
+      results.innerHTML = "<p>No results found.</p>";
+      return;
+    }
+  
+    results.innerHTML = filtered.map(item => `
+      <div class="resultItem">
+        <div class="bookInfo">
+          <h3>${norm(item["Book Title"]) || "Untitled"}</h3>
+          <p><strong>Author:</strong> ${norm(item["Author"]) || "N/A"}</p>
+          <p><strong>Year:</strong> ${norm(item["Year"]) || "N/A"}</p>
+          <p><strong>Publisher:</strong> ${norm(item["Publisher"]) || "N/A"}</p>
+          <p class="description">${norm(item["Description"]) || ""}</p>
+        </div>
+      </div>
+    `).join("");
+  }
+  </script>
