@@ -2,363 +2,604 @@
      STYLES
 ========================= -->
 <style>
-    #results {
-      max-width: 900px;
-      margin: 20px auto;
-    }
-  
-    #searchInput {
-      width: 100%;
-      max-width: 700px;
-      padding: 18px 22px;
-      margin: 25px auto;
-      display: block;
-      font-size: 18px;
-      border-radius: 10px;
-      border: 1px solid #aaa;
-    }
-  
-    .filterGrid {
-      max-width: 700px;
-      margin: 10px auto;
-    }
-  
-    .filterGroup {
-      border: 1px solid #ddd;
-      border-radius: 10px;
-      background: #fafafa;
-      padding: 12px 14px;
-      margin-bottom: 15px;
-    }
-  
-    .filterHeader {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 10px;
-    }
-  
-    .filterTitle {
-      font-weight: 700;
-    }
-  
-    .filterActions {
-      display: inline-flex;
-      gap: 8px;
-    }
-  
-    .miniBtn {
-      padding: 6px 10px;
-      font-size: 12px;
-      border-radius: 999px;
-      border: 1px solid #bbb;
-      background: white;
-      cursor: pointer;
-    }
-  
-    .filterSection {
-      margin-bottom: 18px;
-    }
-  
-    .filterSectionTitle {
-      font-weight: 700;
-      font-size: 15px;
-      margin-bottom: 8px;
-      padding-bottom: 4px;
-      border-bottom: 1px solid #ddd;
-    }
-  
-    .sectionGrid {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 10px 14px;
-    }
-  
-    .checkboxItem {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      border: 1px solid #e5e5e5;
-      background: white;
-      padding: 8px 10px;
-      border-radius: 999px;
-      font-size: 14px;
-      cursor: pointer;
-    }
-  
-    .yearValue {
-      font-weight: bold;
-      font-size: 16px;
-    }
-  
-    input[type="range"] {
-      width: 100%;
-      margin-top: 10px;
-    }
-  
-    .searchButton {
-      display: block;
-      margin: 20px auto 10px;
-      padding: 14px 36px;
-      background: #4A4A4A;
-      color: white;
-      font-size: 18px;
-      border: none;
-      border-radius: 12px;
-      cursor: pointer;
-    }
-  
-    .clearButton {
-      display: block;
-      margin: 0 auto 25px;
-      padding: 10px 30px;
-      background: white;
-      color: #4A4A4A;
-      font-size: 16px;
-      border: 2px solid #4A4A4A;
-      border-radius: 8px;
-      cursor: pointer;
-    }
-  
-    .resultItem {
-      background: #fafafa;
-      border-radius: 10px;
-      padding: 20px;
-      margin-bottom: 20px;
-      border: 1px solid #ddd;
-    }
-  
-    .bookInfo h3 {
-      margin: 0 0 8px 0;
-    }
-  
-    .bookInfo p {
-      margin: 4px 0;
-    }
-  
-    .description {
-      margin-top: 10px;
-    }
-  </style>
-  
-  
-  <input id="searchInput" type="text" placeholder="Search keywords..." />
-  
-  
-  <div class="filterGrid">
-  
-    <!-- CATEGORY FILTER -->
-    <div class="filterGroup">
-      <div class="filterHeader">
-        <div class="filterTitle">Filter by Category</div>
-        <div class="filterActions">
-          <button class="miniBtn" onclick="selectAll()">Select all</button>
-          <button class="miniBtn" onclick="clearAll()">Clear</button>
-        </div>
+  #results {
+    max-width: 900px;
+    margin: 20px auto;
+  }
+
+  #searchInput {
+    width: 100%;
+    max-width: 700px;
+    padding: 18px 22px;
+    margin: 25px auto;
+    display: block;
+    font-size: 18px;
+    border-radius: 10px;
+    border: 1px solid #aaa;
+  }
+
+  .filterGrid {
+    max-width: 700px;
+    margin: 10px auto;
+  }
+
+  .filterGroup {
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    background: #fafafa;
+    padding: 12px 14px;
+    margin-bottom: 15px;
+  }
+
+  .filterHeader {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+  }
+
+  .filterTitle {
+    font-weight: 700;
+  }
+
+  .filterActions {
+    display: inline-flex;
+    gap: 8px;
+  }
+
+  .miniBtn {
+    padding: 6px 10px;
+    font-size: 12px;
+    border-radius: 999px;
+    border: 1px solid #bbb;
+    background: white;
+    cursor: pointer;
+  }
+
+  .filterSection {
+    margin-bottom: 18px;
+  }
+
+  .filterSectionTitle {
+    font-weight: 700;
+    font-size: 15px;
+    margin-bottom: 8px;
+    padding-bottom: 4px;
+    border-bottom: 1px solid #ddd;
+  }
+
+  .sectionGrid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px 14px;
+  }
+
+  .checkboxItem {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    border: 1px solid #e5e5e5;
+    background: white;
+    padding: 8px 10px;
+    border-radius: 999px;
+    font-size: 14px;
+    cursor: pointer;
+  }
+
+  .yearValue {
+    font-weight: bold;
+    font-size: 16px;
+  }
+
+  .yearSliderWrap {
+    position: relative;
+    height: 42px;
+    margin-top: 10px;
+  }
+
+  .yearSliderTrack {
+    position: absolute;
+    top: 50%;
+    left: 0;
+    right: 0;
+    height: 6px;
+    background: #ddd;
+    border-radius: 999px;
+    transform: translateY(-50%);
+  }
+
+  .yearSliderRange {
+    position: absolute;
+    top: 50%;
+    height: 6px;
+    background: #4A4A4A;
+    border-radius: 999px;
+    transform: translateY(-50%);
+  }
+
+  .yearSliderWrap input[type="range"] {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    margin: 0;
+    height: 42px;
+    pointer-events: none;
+    -webkit-appearance: none;
+    appearance: none;
+    background: transparent;
+  }
+
+  .yearSliderWrap input[type="range"]::-webkit-slider-runnable-track {
+    height: 6px;
+    background: transparent;
+  }
+
+  .yearSliderWrap input[type="range"]::-moz-range-track {
+    height: 6px;
+    background: transparent;
+  }
+
+  .yearSliderWrap input[type="range"]::-webkit-slider-thumb {
+    pointer-events: auto;
+    -webkit-appearance: none;
+    appearance: none;
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    background: #4A4A4A;
+    border: 2px solid #fff;
+    box-shadow: 0 0 0 1px #999;
+    cursor: pointer;
+    margin-top: -6px;
+    position: relative;
+    z-index: 2;
+  }
+
+  .yearSliderWrap input[type="range"]::-moz-range-thumb {
+    pointer-events: auto;
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    background: #4A4A4A;
+    border: 2px solid #fff;
+    box-shadow: 0 0 0 1px #999;
+    cursor: pointer;
+    position: relative;
+    z-index: 2;
+  }
+
+  .searchButton {
+    display: block;
+    margin: 20px auto 10px;
+    padding: 14px 36px;
+    background: #4A4A4A;
+    color: white;
+    font-size: 18px;
+    border: none;
+    border-radius: 12px;
+    cursor: pointer;
+  }
+
+  .clearButton {
+    display: block;
+    margin: 0 auto 25px;
+    padding: 10px 30px;
+    background: white;
+    color: #4A4A4A;
+    font-size: 16px;
+    border: 2px solid #4A4A4A;
+    border-radius: 8px;
+    cursor: pointer;
+  }
+
+  .resultItem {
+    display: flex;
+    gap: 20px;
+    align-items: flex-start;
+    background: #fafafa;
+    border-radius: 10px;
+    padding: 18px;
+    margin-bottom: 20px;
+    border: 1px solid #ddd;
+  }
+
+  .bookCover {
+    width: 130px;
+    min-width: 130px;
+    height: 180px;
+    border-radius: 6px;
+    border: 1px solid #ddd;
+    object-fit: cover;
+    background: white;
+    display: block;
+  }
+
+  .bookInfo h3 {
+    margin: 0 0 8px 0;
+  }
+
+  .bookInfo p {
+    margin: 4px 0;
+  }
+
+  .description {
+    margin-top: 10px;
+  }
+
+  .noImage {
+    width: 130px;
+    min-width: 130px;
+    height: 180px;
+    border-radius: 6px;
+    border: 1px solid #ddd;
+    background: #f0f0f0;
+    color: #777;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 13px;
+    text-align: center;
+    padding: 10px;
+    box-sizing: border-box;
+  }
+</style>
+
+<input id="searchInput" type="text" placeholder="Search keywords..." />
+
+<div class="filterGrid">
+
+  <div class="filterGroup">
+    <div class="filterHeader">
+      <div class="filterTitle">Filter by Category</div>
+      <div class="filterActions">
+        <button class="miniBtn" onclick="selectAll()">Select all</button>
+        <button class="miniBtn" onclick="clearAll()">Clear</button>
       </div>
-      <div id="masterFilter"></div>
     </div>
-  
-    <!-- YEAR SLIDER -->
-    <div class="filterGroup">
-      <div class="filterHeader">
-        <div class="filterTitle">
-          Filter by Year:
-          <span id="yearDisplay" class="yearValue"></span>
-        </div>
-      </div>
-      <input type="range" id="yearSlider">
-    </div>
-  
+    <div id="masterFilter"></div>
   </div>
-  
-  
-  <button onclick="runSearch()" class="searchButton">Search</button>
-  <button onclick="clearFilters()" class="clearButton">Clear</button>
-  
-  <div id="results"></div>
-  
-  
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.4.1/papaparse.min.js"></script>
-  
-  <script>
-  const csvUrl =
-  "https://docs.google.com/spreadsheets/d/e/2PACX-1vQa4jwN85ZFxUo312YKLjdP7ijcNw96pUTxkiCgNWlrZhAClo6oV7aq5v3XoD4BwH9kJELtM1lslrh5/pub?gid=1676386569&single=true&output=csv";
-  
-  let database = [];
-  let headers = [];
-  
-  const ALLOWED_YEARS = [
-    1973, 1985, 2004, 2005, 2009, 2010, 2011, 2012, 2014,
-    2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024, 2025
-  ];
-  
-  const MASTER_GROUPS = {
-    "Concepts": ["Concept:"],
-    "Audience": ["Audience:"],
-    "Format": ["Format:"],
-    "Genre": ["Genre:"]
-  };
-  
-  const MASTER_PREFIXES = ["Concept:", "Audience:", "Format:", "Genre:"];
-  
-  Papa.parse(csvUrl, {
-    download: true,
-    header: true,
-    skipEmptyLines: true,
-    complete: ({ data, meta }) => {
-      headers = meta.fields || [];
-      database = data || [];
-      populateFilters();
-      setupYearSlider();
-    }
-  });
-  
-  function norm(s) { return String(s || "").trim(); }
-  
-  function isTrueish(v) {
-    return ["true","yes","y","1","checked"]
-      .includes(String(v || "").toLowerCase());
-  }
-  
-  function optionsFromHeaderPrefixes(prefixes) {
-    const opts = new Set();
-    headers.forEach(h => {
-      prefixes.forEach(p => {
-        if (h.startsWith(p)) {
-          const label = h.slice(p.length).trim();
-          if (label) opts.add(label);
-        }
-      });
-    });
-    return opts;
-  }
-  
-  function populateFilters() {
-    const container = document.getElementById("masterFilter");
-    container.innerHTML = "";
-  
-    Object.entries(MASTER_GROUPS).forEach(([groupName, prefixes]) => {
-      const options = optionsFromHeaderPrefixes(prefixes);
-      if (!options.size) return;
-  
-      const section = document.createElement("div");
-      section.className = "filterSection";
-  
-      const title = document.createElement("div");
-      title.className = "filterSectionTitle";
-      title.textContent = groupName;
-  
-      const grid = document.createElement("div");
-      grid.className = "sectionGrid";
-  
-      [...options].sort().forEach(v => {
-        const label = document.createElement("label");
-        label.className = "checkboxItem";
-  
-        const input = document.createElement("input");
-        input.type = "checkbox";
-        input.value = v;
-  
-        label.appendChild(input);
-        label.appendChild(document.createTextNode(v));
-        grid.appendChild(label);
-      });
-  
-      section.appendChild(title);
-      section.appendChild(grid);
-      container.appendChild(section);
-    });
-  }
-  
-  function setupYearSlider() {
-    const slider = document.getElementById("yearSlider");
-    const display = document.getElementById("yearDisplay");
-  
-    slider.min = 0;
-    slider.max = ALLOWED_YEARS.length - 1;
-    slider.step = 1;
-    slider.value = ALLOWED_YEARS.length - 1;
-  
-    display.textContent = ALLOWED_YEARS[slider.value];
-  
-    slider.addEventListener("input", () => {
-      display.textContent = ALLOWED_YEARS[slider.value];
-    });
-  }
-  
-  function getCheckedValues() {
-    return [...document.querySelectorAll("#masterFilter input:checked")]
-      .map(cb => cb.value);
-  }
-  
-  function selectAll() {
-    document.querySelectorAll("#masterFilter input")
-      .forEach(cb => cb.checked = true);
-  }
-  
-  function clearAll() {
-    document.querySelectorAll("#masterFilter input")
-      .forEach(cb => cb.checked = false);
-  }
-  
-  function clearFilters() {
-    document.getElementById("searchInput").value = "";
-    clearAll();
-    setupYearSlider();
-    document.getElementById("results").innerHTML = "";
-  }
-  
-  function collectTrueFromHeaderPrefixes(item, prefixes) {
-    const out = [];
-    headers.forEach(h => {
-      prefixes.forEach(p => {
-        if (h.startsWith(p) && isTrueish(item[h])) {
-          out.push(h.slice(p.length).trim());
-        }
-      });
-    });
-    return out;
-  }
-  
-  function runSearch() {
-    const results = document.getElementById("results");
-  
-    const terms = document.getElementById("searchInput")
-      .value.toLowerCase().split(/\s+/).filter(Boolean);
-  
-    const selectedFilters = getCheckedValues();
-    const sliderIndex = parseInt(document.getElementById("yearSlider").value);
-    const selectedYear = ALLOWED_YEARS[sliderIndex];
-  
-    const filtered = database.filter(item => {
-      const text = Object.values(item).join(" ").toLowerCase();
-      if (terms.length && !terms.every(t => text.includes(t))) return false;
-  
-      const rowValues = collectTrueFromHeaderPrefixes(item, MASTER_PREFIXES);
-      if (selectedFilters.length &&
-          !selectedFilters.some(v => rowValues.includes(v))) return false;
-  
-      if (parseInt(item["Year"]) !== selectedYear) return false;
-  
-      return true;
-    });
-  
-    if (!filtered.length) {
-      results.innerHTML = "<p>No results found.</p>";
-      return;
-    }
-  
-    results.innerHTML = filtered.map(item => `
-      <div class="resultItem">
-        <div class="bookInfo">
-          <h3>${norm(item["Book Title"]) || "Untitled"}</h3>
-          <p><strong>Author:</strong> ${norm(item["Author"]) || "N/A"}</p>
-          <p><strong>Year:</strong> ${norm(item["Year"]) || "N/A"}</p>
-          <p><strong>Publisher:</strong> ${norm(item["Publisher"]) || "N/A"}</p>
-          <p class="description">${norm(item["Description"]) || ""}</p>
-        </div>
+
+  <div class="filterGroup">
+    <div class="filterHeader">
+      <div class="filterTitle">
+        Filter by Year:
+        <span id="yearDisplay" class="yearValue"></span>
       </div>
-    `).join("");
+    </div>
+
+    <div class="yearSliderWrap">
+      <div class="yearSliderTrack"></div>
+      <div id="yearSliderRange" class="yearSliderRange"></div>
+      <input type="range" id="yearSliderMin">
+      <input type="range" id="yearSliderMax">
+    </div>
+  </div>
+
+</div>
+
+<button onclick="runSearch()" class="searchButton">Search</button>
+<button onclick="clearFilters()" class="clearButton">Clear</button>
+
+<div id="results"></div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.4.1/papaparse.min.js"></script>
+
+<script>
+const csvUrl =
+"https://docs.google.com/spreadsheets/d/e/2PACX-1vQa4jwN85ZFxUo312YKLjdP7ijcNw96pUTxkiCgNWlrZhAClo6oV7aq5v3XoD4BwH9kJELtM1lslrh5/pub?gid=1676386569&single=true&output=csv";
+
+let database = [];
+let headers = [];
+
+const ALLOWED_YEARS = [
+  1973, 1985, 2004, 2005, 2009, 2010, 2011, 2012, 2014,
+  2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024, 2025
+];
+
+const MASTER_GROUPS = {
+  "Concepts": ["Concept:"],
+  "Audience": ["Audience:"],
+  "Format": ["Format:"],
+  "Genre": ["Genre:"]
+};
+
+const MASTER_PREFIXES = ["Concept:", "Audience:", "Format:", "Genre:"];
+
+Papa.parse(csvUrl, {
+  download: true,
+  header: true,
+  skipEmptyLines: true,
+  complete: ({ data, meta }) => {
+    headers = meta.fields || [];
+    database = data || [];
+    populateFilters();
+    setupYearSlider();
   }
-  </script>
+});
+
+function norm(s) {
+  return String(s || "").trim();
+}
+
+function escapeHtml(str) {
+  return String(str || "")
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#39;");
+}
+
+function isTrueish(v) {
+  return ["true", "yes", "y", "1", "checked"]
+    .includes(String(v || "").toLowerCase());
+}
+
+function optionsFromHeaderPrefixes(prefixes) {
+  const opts = new Set();
+
+  headers.forEach(h => {
+    prefixes.forEach(p => {
+      if (h.startsWith(p)) {
+        const label = h.slice(p.length).trim();
+        if (label) opts.add(label);
+      }
+    });
+  });
+
+  return opts;
+}
+
+function populateFilters() {
+  const container = document.getElementById("masterFilter");
+  container.innerHTML = "";
+
+  Object.entries(MASTER_GROUPS).forEach(([groupName, prefixes]) => {
+    const options = optionsFromHeaderPrefixes(prefixes);
+    if (!options.size) return;
+
+    const section = document.createElement("div");
+    section.className = "filterSection";
+
+    const title = document.createElement("div");
+    title.className = "filterSectionTitle";
+    title.textContent = groupName;
+
+    const grid = document.createElement("div");
+    grid.className = "sectionGrid";
+
+    [...options].sort().forEach(v => {
+      const label = document.createElement("label");
+      label.className = "checkboxItem";
+
+      const input = document.createElement("input");
+      input.type = "checkbox";
+      input.value = v;
+
+      label.appendChild(input);
+      label.appendChild(document.createTextNode(v));
+      grid.appendChild(label);
+    });
+
+    section.appendChild(title);
+    section.appendChild(grid);
+    container.appendChild(section);
+  });
+}
+
+function setupYearSlider() {
+  const minSlider = document.getElementById("yearSliderMin");
+  const maxSlider = document.getElementById("yearSliderMax");
+
+  minSlider.min = 0;
+  minSlider.max = ALLOWED_YEARS.length - 1;
+  minSlider.step = 1;
+  minSlider.value = 0;
+
+  maxSlider.min = 0;
+  maxSlider.max = ALLOWED_YEARS.length - 1;
+  maxSlider.step = 1;
+  maxSlider.value = ALLOWED_YEARS.length - 1;
+
+  minSlider.addEventListener("input", handleMinSlider);
+  maxSlider.addEventListener("input", handleMaxSlider);
+
+  updateYearDisplay();
+  updateYearRangeFill();
+}
+
+function handleMinSlider() {
+  const minSlider = document.getElementById("yearSliderMin");
+  const maxSlider = document.getElementById("yearSliderMax");
+
+  let minIndex = parseInt(minSlider.value, 10);
+  const maxIndex = parseInt(maxSlider.value, 10);
+
+  if (minIndex >= maxIndex) {
+    minIndex = maxIndex - 1;
+    minSlider.value = minIndex;
+  }
+
+  updateYearDisplay();
+  updateYearRangeFill();
+}
+
+function handleMaxSlider() {
+  const minSlider = document.getElementById("yearSliderMin");
+  const maxSlider = document.getElementById("yearSliderMax");
+
+  const minIndex = parseInt(minSlider.value, 10);
+  let maxIndex = parseInt(maxSlider.value, 10);
+
+  if (maxIndex <= minIndex) {
+    maxIndex = minIndex + 1;
+    maxSlider.value = maxIndex;
+  }
+
+  updateYearDisplay();
+  updateYearRangeFill();
+}
+
+function updateYearDisplay() {
+  const minSlider = document.getElementById("yearSliderMin");
+  const maxSlider = document.getElementById("yearSliderMax");
+  const display = document.getElementById("yearDisplay");
+
+  const minYear = ALLOWED_YEARS[parseInt(minSlider.value, 10)];
+  const maxYear = ALLOWED_YEARS[parseInt(maxSlider.value, 10)];
+
+  display.textContent = `${minYear} - ${maxYear}`;
+}
+
+function updateYearRangeFill() {
+  const minSlider = document.getElementById("yearSliderMin");
+  const maxSlider = document.getElementById("yearSliderMax");
+  const rangeFill = document.getElementById("yearSliderRange");
+
+  const min = parseInt(minSlider.min, 10);
+  const max = parseInt(minSlider.max, 10);
+  const minVal = parseInt(minSlider.value, 10);
+  const maxVal = parseInt(maxSlider.value, 10);
+
+  const leftPercent = ((minVal - min) / (max - min)) * 100;
+  const rightPercent = ((maxVal - min) / (max - min)) * 100;
+
+  rangeFill.style.left = leftPercent + "%";
+  rangeFill.style.width = (rightPercent - leftPercent) + "%";
+}
+
+function resetYearSlider() {
+  const minSlider = document.getElementById("yearSliderMin");
+  const maxSlider = document.getElementById("yearSliderMax");
+
+  minSlider.value = 0;
+  maxSlider.value = ALLOWED_YEARS.length - 1;
+
+  updateYearDisplay();
+  updateYearRangeFill();
+}
+
+function getCheckedValues() {
+  return [...document.querySelectorAll("#masterFilter input:checked")]
+    .map(cb => cb.value);
+}
+
+function selectAll() {
+  document.querySelectorAll("#masterFilter input")
+    .forEach(cb => cb.checked = true);
+}
+
+function clearAll() {
+  document.querySelectorAll("#masterFilter input")
+    .forEach(cb => cb.checked = false);
+}
+
+function clearFilters() {
+  document.getElementById("searchInput").value = "";
+  clearAll();
+  resetYearSlider();
+  document.getElementById("results").innerHTML = "";
+}
+
+function collectTrueFromHeaderPrefixes(item, prefixes) {
+  const out = [];
+
+  headers.forEach(h => {
+    prefixes.forEach(p => {
+      if (h.startsWith(p) && isTrueish(item[h])) {
+        out.push(h.slice(p.length).trim());
+      }
+    });
+  });
+
+  return out;
+}
+
+function extractDriveFileId(url) {
+  if (!url) return "";
+
+  const cleanUrl = String(url).trim();
+  const match = cleanUrl.match(/\/file\/d\/([^\/?#]+)/);
+
+  return match ? match[1] : "";
+}
+
+function getDirectImageUrl(url) {
+  if (!url) return "";
+
+  const fileId = extractDriveFileId(url);
+
+  if (!fileId) return "";
+
+  return `https://drive.google.com/thumbnail?id=${fileId}&sz=w1000`;
+}
+
+function buildCoverHtml(item) {
+  const rawCover = item["Book Cover Link"];
+  const coverUrl = getDirectImageUrl(rawCover);
+
+  if (!coverUrl) {
+    return `<div class="noImage">No Cover Image</div>`;
+  }
+
+  return `
+    <img
+      class="bookCover"
+      src="${escapeHtml(coverUrl)}"
+      alt="Book Cover"
+      loading="lazy"
+      referrerpolicy="no-referrer"
+      onerror="this.outerHTML='<div class=&quot;noImage&quot;>Image Unavailable</div>';"
+    >
+  `;
+}
+
+function runSearch() {
+  const results = document.getElementById("results");
+
+  const terms = document.getElementById("searchInput")
+    .value.toLowerCase().split(/\s+/).filter(Boolean);
+
+  const selectedFilters = getCheckedValues();
+  const minIndex = parseInt(document.getElementById("yearSliderMin").value, 10);
+  const maxIndex = parseInt(document.getElementById("yearSliderMax").value, 10);
+
+  const minYear = ALLOWED_YEARS[minIndex];
+  const maxYear = ALLOWED_YEARS[maxIndex];
+
+  const filtered = database.filter(item => {
+    const text = Object.values(item).join(" ").toLowerCase();
+    if (terms.length && !terms.every(t => text.includes(t))) return false;
+
+    const rowValues = collectTrueFromHeaderPrefixes(item, MASTER_PREFIXES);
+    if (selectedFilters.length &&
+        !selectedFilters.some(v => rowValues.includes(v))) return false;
+
+    const itemYear = parseInt(item["Year"], 10);
+    if (isNaN(itemYear) || itemYear < minYear || itemYear > maxYear) return false;
+
+    return true;
+  });
+
+  if (!filtered.length) {
+    results.innerHTML = "<p>No results found.</p>";
+    return;
+  }
+
+  results.innerHTML = filtered.map(item => `
+    <div class="resultItem">
+      ${buildCoverHtml(item)}
+
+      <div class="bookInfo">
+        <h3>${escapeHtml(norm(item["Book Title"]) || "Untitled")}</h3>
+        <p><strong>Author:</strong> ${escapeHtml(norm(item["Author"]) || "N/A")}</p>
+        <p><strong>Year:</strong> ${escapeHtml(norm(item["Year"]) || "N/A")}</p>
+        <p><strong>Publisher:</strong> ${escapeHtml(norm(item["Publisher"]) || "N/A")}</p>
+        <p class="description">${escapeHtml(norm(item["Description"]) || "")}</p>
+      </div>
+    </div>
+  `).join("");
+}
+</script>
+
