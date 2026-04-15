@@ -16,11 +16,14 @@
     font-size: 18px;
     border-radius: 10px;
     border: 1px solid #aaa;
+    box-sizing: border-box;
   }
 
   .filterGrid {
     max-width: 700px;
     margin: 10px auto;
+    padding: 0 12px;
+    box-sizing: border-box;
   }
 
   .filterGroup {
@@ -29,6 +32,8 @@
     background: #fafafa;
     padding: 12px 14px;
     margin-bottom: 15px;
+    box-sizing: border-box;
+    width: 100%;
   }
 
   .filterHeader {
@@ -36,6 +41,8 @@
     justify-content: space-between;
     align-items: center;
     margin-bottom: 10px;
+    gap: 10px;
+    flex-wrap: wrap;
   }
 
   .filterTitle {
@@ -45,6 +52,7 @@
   .filterActions {
     display: inline-flex;
     gap: 8px;
+    flex-wrap: wrap;
   }
 
   .miniBtn {
@@ -93,15 +101,20 @@
 
   .yearSliderWrap {
     position: relative;
+    width: 100%;
+    max-width: 100%;
     height: 42px;
     margin-top: 10px;
+    padding: 0 10px;
+    box-sizing: border-box;
+    overflow: hidden;
   }
 
   .yearSliderTrack {
     position: absolute;
     top: 50%;
-    left: 0;
-    right: 0;
+    left: 10px;
+    right: 10px;
     height: 6px;
     background: #ddd;
     border-radius: 999px;
@@ -119,9 +132,10 @@
 
   .yearSliderWrap input[type="range"] {
     position: absolute;
-    left: 0;
     top: 0;
-    width: 100%;
+    left: 10px;
+    width: calc(100% - 20px);
+    max-width: calc(100% - 20px);
     margin: 0;
     height: 42px;
     pointer-events: none;
@@ -242,6 +256,101 @@
     text-align: center;
     padding: 10px;
     box-sizing: border-box;
+  }
+
+  @media (max-width: 768px) {
+    #searchInput {
+      font-size: 16px;
+      padding: 14px 16px;
+    }
+
+    .filterGrid {
+      padding: 0 10px;
+    }
+
+    .filterGroup {
+      padding: 12px;
+    }
+
+    .yearSliderWrap {
+      padding: 0 12px;
+    }
+
+    .yearSliderTrack {
+      left: 12px;
+      right: 12px;
+    }
+
+    .yearSliderWrap input[type="range"] {
+      left: 12px;
+      width: calc(100% - 24px);
+      max-width: calc(100% - 24px);
+    }
+
+    .resultItem {
+      flex-direction: column;
+      align-items: center;
+      text-align: left;
+    }
+
+    .bookCover,
+    .noImage {
+      width: 120px;
+      min-width: 120px;
+      height: 165px;
+    }
+
+    .bookInfo {
+      width: 100%;
+    }
+  }
+
+  @media (max-width: 480px) {
+    .filterHeader {
+      align-items: flex-start;
+    }
+
+    .filterActions {
+      width: 100%;
+    }
+
+    .miniBtn {
+      font-size: 11px;
+      padding: 6px 9px;
+    }
+
+    .yearValue {
+      display: inline-block;
+      margin-top: 4px;
+      font-size: 15px;
+    }
+
+    .yearSliderWrap {
+      height: 44px;
+      padding: 0 14px;
+    }
+
+    .yearSliderTrack {
+      left: 14px;
+      right: 14px;
+    }
+
+    .yearSliderWrap input[type="range"] {
+      left: 14px;
+      width: calc(100% - 28px);
+      max-width: calc(100% - 28px);
+    }
+
+    .yearSliderWrap input[type="range"]::-webkit-slider-thumb {
+      width: 20px;
+      height: 20px;
+      margin-top: -7px;
+    }
+
+    .yearSliderWrap input[type="range"]::-moz-range-thumb {
+      width: 20px;
+      height: 20px;
+    }
   }
 </style>
 
